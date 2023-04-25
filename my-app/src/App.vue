@@ -1,16 +1,13 @@
 <script setup lang="ts">
-
+import ImgCheck from './components/ImgCheck.vue';
 </script>
 
 <template>
-  <div>
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <div><ImgCheck/></div>
 </template>
 
 <style scoped>
-.logo {
+/* .logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
@@ -21,5 +18,5 @@
 }
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
-}
+} */
 </style>
