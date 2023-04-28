@@ -1,82 +1,69 @@
 <template>
   <div class="box">
-    <h3>拖动下方滑块完成拼图</h3>
+    <h3>拖动下方的图片完成拼图</h3>
     <div ref="bgImgRef" class="img-box">
-      <img class="bg" src="../assets/hycdn.jpeg" alt="" />
-      <img
-        class="hd"
-        src="../assets/hycdn.png"
-        :style="{ left: data.left + 'px', top: data.top + 'px' }"
-        alt=""
-      />
+      <img class="bg" src="../assets/hycdn.jpeg" alt="">
+      <img 
+      class="hd" 
+      :style="{ left:data.left + 'px' , top:data.top + 'px'}"
+      src="../assets/hycdn.png" 
+      alt="">
     </div>
-    <!-- @mousemove="btnMousemove" -->
     <div class="btn-box">
-      <div
-        ref="btnRef"
-        class="btn"
-        :style="{ left: data.left + 'px' }"
-        @mousedown="btnMousedown"
-      >
-        |||
-      </div>
+      <div :style="{left:data.left + 'px'}"  ref="btnRef" class="btn" @mousedown="btnMousedown" @mouseup="btnMouseup">|||</div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { reactive, onMounted, toRefs } from "vue";
-
+import { reactive, onMounted, toRefs ,ref} from "vue";
+ 
 let $props = defineProps({
-  top: {
-    type: Number,
-    default: 45,
-  },
-});
-
-let $emit = defineEmits(["getPosition"]);
+  top:{
+    type:Number,
+    default:45
+  }
+})
 
 const data = reactive({
-  left: 28,
-  top: $props.top,
-  btnLeft: 0,
-  btnRef: null,
+  left:28,
+  top:$props.top,
+  btnLeft:0,
+  btnRef:null,
   offsetLeft: 0,
-  bgImgRef: null,
+  bgImgRef:null,
 });
-const { btnRef, bgImgRef } = toRefs(data);
+const { btnRef,bgImgRef } = toRefs(data);
 
-// let btnRef = ref(null)
-onMounted(() => {
-  data.offsetLeft = data.bgImgRef.offsetLeft;
-  console.log("onMounted");
-  document.body.addEventListener("mouseup", btnMouseup);
-});
+onMounted(()=>{
+  data.offsetLeft = data.bgImgRef.offsetLeft
+  console.log('xxx');
+  document.body.addEventListener('mouseup' , btnMouseup)
 
-//按下
-var btnMousedown = (e) => {
-  //   console.log(e);
-  //计算出鼠标按下的位置 pagex - btn距离窗口的位置  = 鼠标电机的位置距离btn的边距
-  data.btnLeft = e.pageX - data.btnRef.offsetLeft;
-  document.body.addEventListener("mousemove", btnMousemove);
-};
-//滑动的时候只要求鼠标没有松开
-var btnMousemove = (e) => {
-  //   console.log("滑动");
-  //left = 鼠标的位置pageX - data.btnRef.offsetLeft -  data.btnLeft
+})
+
+// 按下
+var btnMousedown = (e)=>{
+  // 鼠标按下计算出鼠标的位置
+  data.btnLeft = e.pageX - data.btnRef.offsetLeft
+  document.body.addEventListener('mousemove' , btnMousemove)
+}
+// 滑动的时候子要求鼠标没有松开
+var btnMousemove = (e)=>{
+  console.log('滑动');
+  // left表示小图片的位置
   let x = e.pageX - data.offsetLeft - data.btnLeft;
-  //   console.log(x);
-  if (x <= 0) x = 0;
-  else if (x >= 285) x = 285;
+  if(x <= 0) x = 0;
+  else if(x >= 285) x = 285;
+ 
   data.left = x;
-};
-
-// 松开
-var btnMouseup = (e) => {
-  //   console.log(data.left);
-  $emit("getPosition", data.left);
-  document.body.removeEventListener("mousemove", btnMousemove);
-};
+}
+// 松开鼠标
+var btnMouseup = (e)=>{
+  console.log(data.left);
+  // 移出帮定的移动事件
+  document.body.removeEventListener('mousemove',btnMousemove)
+}
 </script>
 <style scoped>
 html,
