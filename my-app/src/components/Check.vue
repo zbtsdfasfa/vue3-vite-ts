@@ -10,7 +10,7 @@
       alt="">
     </div>
     <div class="btn-box">
-      <div :style="{left:data.left + 'px'}"  ref="btnRef" class="btn" @mousedown="btnMousedown" @mouseup="btnMouseup">|||</div>
+      <div :style="{left:data.left + 'px'}"  ref="btnRef" class="btn" @mousedown="btnMousedown">|||</div>
     </div>
   </div>
 </template>
@@ -24,6 +24,8 @@ let $props = defineProps({
     default:45
   }
 })
+
+let $emit = defineEmits(['getPosition'])
 
 const data = reactive({
   left:28,
@@ -50,7 +52,7 @@ var btnMousedown = (e)=>{
 }
 // 滑动的时候子要求鼠标没有松开
 var btnMousemove = (e)=>{
-  console.log('滑动');
+  // console.log('滑动');
   // left表示小图片的位置
   let x = e.pageX - data.offsetLeft - data.btnLeft;
   if(x <= 0) x = 0;
@@ -60,7 +62,8 @@ var btnMousemove = (e)=>{
 }
 // 松开鼠标
 var btnMouseup = (e)=>{
-  console.log(data.left);
+  // console.log(data.left);
+  $emit('getPosition' , data.left)
   // 移出帮定的移动事件
   document.body.removeEventListener('mousemove',btnMousemove)
 }
